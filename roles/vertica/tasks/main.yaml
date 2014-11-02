@@ -5,7 +5,7 @@
 - name: Install Vertica dependencies
   apt: name={{item}} state=present
   with_items:
-    - mcelog
+    # - mcelog
     - sysstat
     - pstack
     - ntp
@@ -20,25 +20,25 @@
   command: dpkg -i /tmp/vertica.deb
   when: vertica_deb_installed_check|failed
 
-- name: Check if Vertica adminTools configuration exists
-  command: test -f /opt/vertica/config/admintools.conf
-  register: admintools_config_exists_check
-  changed_when: False
-  ignore_errors: True
-
-- name: Install Vertica using the install script
-  shell: /opt/vertica/sbin/install_vertica --hosts 127.0.0.1 --license CE --accept-eula --point-to-point --dba-user-password-disabled
-  when: admintools_config_exists_check|failed
-
-- name: Check if the default database exists
-  command: test -d /home/dbadmin/default ## TODO make this check more robust
-  register: default_database_exists_check
-  changed_when: False
-  ignore_errors: True
-
-- name: Create default Vertica database
-  shell: su dbadmin -c "/opt/vertica/bin/adminTools -t create_db -s 127.0.0.1 -d default --policy=always"
-  when: default_database_exists_check|failed
-
-- name: Start the database
-  service: name=verticad state=started
+# - name: Check if Vertica adminTools configuration exists
+#   command: test -f /opt/vertica/config/admintools.conf
+#   register: admintools_config_exists_check
+#   changed_when: False
+#   ignore_errors: True
+#
+# - name: Install Vertica using the install script
+#   shell: /opt/vertica/sbin/install_vertica --hosts 127.0.0.1 --license CE --accept-eula --dba-user-password-disabled
+#   when: admintools_config_exists_check|failed
+#
+# - name: Check if the default database exists
+#   command: test -d /home/dbadmin/default ## TODO make this check more robust
+#   register: default_database_exists_check
+#   changed_when: False
+#   ignore_errors: True
+#
+# - name: Create default Vertica database
+#   shell: su dbadmin -c "/opt/vertica/bin/adminTools -t create_db -s 127.0.0.1 -d default --policy=always"
+#   when: default_database_exists_check|failed
+#
+# - name: Start the database
+#   service: name=verticad state=started

@@ -5,11 +5,11 @@ Vagrant.require_version ">= 1.6.5"
 
 VAGRANTFILE_API_VERSION = "2"
 
-VERTICA_DEB_PATH = "~/Downloads/vertica_7.0.2-1_amd64.deb"
+VERTICA_DEB_PATH = "./vertica7.deb"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "ubuntu/precise64"
+  config.vm.box = "ubuntu/trusty64"
 
   config.vm.define "vertica_node" do |vertica_node|
     vertica_node.vm.network "private_network", ip: "192.168.111.111"
